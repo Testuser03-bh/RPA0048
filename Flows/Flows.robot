@@ -24,13 +24,13 @@ Read Directory And Execute Company Process
 
 
     # -------- VHP PROCESS --------
-    # IF    'vhpfinaltable' in ${dirs_lower}
-    #     Log To Console    ===== Starting VHP Process =====
-    #     Run Keyword And Continue On Failure     Connect To SAP- VHP
-    #     Create the purchase order--VHP
-    #     Terminate the SAP process
-    #     Log To Console    ===== Finished VHP Process =====
-    # END
+    IF    'vhpfinaltable' in ${dirs_lower}
+        Log To Console    ===== Starting VHP Process =====
+        Run Keyword And Continue On Failure     Connect To SAP- VHP
+        Create the purchase order--VHP
+        Terminate the SAP process
+        Log To Console    ===== Finished VHP Process =====
+    END
 
     # -------- VPP PROCESS --------
     IF    'vppfinaltable' in ${dirs_lower}
