@@ -172,14 +172,14 @@ Create the purchase order--VPP
         # ============================================================
 
                 ${sap_message}=    Get Value    wnd[0]/sbar
-                IF    "blocked" in "${sap_message}" or "Enter a quantity" in "${sap_message}" or "service approver" in "${sap_message}" or "not yet created by purchasing organization" in "${sap_message}"
+                IF    "${msg_type}" == "E"
                     Create Vendor Error
                     ...    ${empresa}
                     ...    ${tipo_servico}
                     ...    ${sap_message}
                     ...    ${ROOT_DIR}
                     Send Vkey      12
-                    Wait Until Keyword Succeeds    20s    2s    Element should Be Present    wnd[1]/tbar[0]/btn[0]
+                    Sleep          1s
                     Click Element  wnd[1]/tbar[0]/btn[0]
                     Continue For Loop
                 END
