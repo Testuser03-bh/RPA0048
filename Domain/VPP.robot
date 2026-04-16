@@ -59,7 +59,7 @@ Create the purchase order--VPP
 
         ${fileName}=      Get From Dictionary    ${item}    file
         Log To Console    Current file Name: ${fileName}
-        ${file}           Evaluate               "${fileName}"[:16]
+        ${file}           Evaluate               "${fileName}"[:25]
         ${headers}=       Get From Dictionary    ${item}    headers
         ${titulo}=        Get From Dictionary    ${headers}    Título do serviço:
         ${num}=           Get From Dictionary    ${headers}    Núm. participantes:
