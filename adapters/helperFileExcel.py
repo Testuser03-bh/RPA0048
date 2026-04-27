@@ -347,13 +347,7 @@ def build_header_aux_table_filewise(directory_files):
 
 
 def extract_all_header_fields(directory_files, company_type):
-    """
-    - Reads JSON files inside Data/Header_Aux_Table/VHP or VPP
-    - Extracts header key-value pairs
-    - Returns list of dictionaries file-wise
-    """
 
-    # Select correct company folder
     header_dir = os.path.join(
         directory_files,
         "Data",
@@ -366,6 +360,7 @@ def extract_all_header_fields(directory_files, company_type):
         return []
 
     extracted_list = []
+    seen_files = set()
 
     json_files = [
         f for f in os.listdir(header_dir)
@@ -387,10 +382,14 @@ def extract_all_header_fields(directory_files, company_type):
         file_path = data.get("file", "")
         file_name = os.path.basename(file_path)
 
+        # ✅ REMOVE DUPLICATES
+        if file_name in seen_files:
+            continue
+        seen_files.add(file_name)
+
         file_dict = {}
 
         for row in rows:
-
             if len(row) < 2:
                 continue
 
@@ -408,7 +407,6 @@ def extract_all_header_fields(directory_files, company_type):
     logger.console(f" Header fields extracted for {company_type}")
 
     return extracted_list
-
 
 
 

@@ -57,6 +57,7 @@ Create the purchase order--VHP
     FOR    ${item}    IN    @{header_data}
 
         ${fileName}=      Get From Dictionary    ${item}    file
+        Log To Console    Current file Name: ${fileName}
         ${file}           Evaluate               "${fileName}"[:25]
         ${headers}=       Get From Dictionary    ${item}    headers
         ${titulo}=        Get From Dictionary    ${headers}    Título do serviço:
@@ -80,9 +81,8 @@ Create the purchase order--VHP
         Wait Until Keyword Succeeds    30s    2s    Element should Be Present    wnd[0]/tbar[0]/okcd
         Run Transaction    ${primary_config['SAP_Operation']}      
 
-        #Step5.5.2.2.4
         Press Keys     ctrl    f2   
-        sleep    1s
+        sleep    2s
         Select From List By Label     ${DROPDOWN_IDD}    Purchase requisition
         Wait Until Keyword Succeeds    30s    2s    Element should Be Present    ${TEXT_EDITOR_IDD}
 
@@ -356,18 +356,21 @@ Create the purchase order--VHP
                 ${only_pr}=    Get From Dictionary    ${pr_number}    pr_number
                 Send Email Final Report-prnumber  ${only_pr}  ${tipo_servico} 
                 log to console     "Email is send succcesfully for the Pr number "
+            
+
+
+                Handle Attachment Status     ${ROOT_DIR}  ${empresa}    ${tipo_servico}     ${sap_final}
+
+                ${AttachmentFilePath}=     Set Variable     ${ROOT_DIR}${/}Report${/}Relatório Final_Analítico.xlsx
+                Send Email Final Report   ${AttachmentFilePath}
             END
-
-
-            Handle Attachment Status     ${ROOT_DIR}  ${empresa}    ${tipo_servico}     ${sap_final}
-
-            ${AttachmentFilePath}=     Set Variable     ${ROOT_DIR}${/}Report${/}Relatório Final_Analítico.xlsx
-            Send Email Final Report   ${AttachmentFilePath}
    
             sleep     2s
 
-            Press Keys        alt      f4
+           Wait For Element    image:${EXECDIR}//Data//Images//close.png    timeout=20
+           Click        image:${EXECDIR}//Data//Images//close.png
             sleep       1s
+            # Exit For Loop
 
     END
 
@@ -486,10 +489,11 @@ Clean up
     Run Keyword And Ignore Error    OperatingSystem.Run    taskkill /F /IM sapgui.exe /T
 
 Terminate the SAP process
+    Log To Console     this is the *********
 
-    Press Keys     ALT  F4
+    # Press Keys     ALT  F4
     sleep    1s
     press keys     ctrl    left
-    sleep    1s
+    sleep    2s
     press keys      enter 
  
